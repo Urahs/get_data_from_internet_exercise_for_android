@@ -2,12 +2,15 @@ package com.example.myapplication
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.withCreated
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.databinding.ItemShoppingItemBinding
 import com.example.myapplication.network.NetworkInstance
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import retrofit2.Retrofit
 
 class MainActivity : AppCompatActivity() {
@@ -23,9 +26,22 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        lifecycleScope.launch(Dispatchers.IO){
-            val response = NetworkInstance.api.getItemData()
+        var itemAdapter = ItemAdapter()
 
+
+        lifecycleScope.launch(Dispatchers.IO){
+
+            try {
+                val response = NetworkInstance.api.getItemData()
+                withContext(Dispatchers.Main){
+                    binding.itemRecyclerView.adapter = itemAdapter
+                    itemAdapter!!.items = response
+                    itemAdapter!!.notifyDataSetChanged()
+                }
+            }
+            catch (e: Exception) {
+                Log.d("TEST", "CRASHHHHHHHH!!!!")
+            }
 
         }
 
