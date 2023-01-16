@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        var itemAdapter = ItemAdapter()
+        var itemAdapter = ItemAdapter(this)
 
 
         lifecycleScope.launch(Dispatchers.IO){

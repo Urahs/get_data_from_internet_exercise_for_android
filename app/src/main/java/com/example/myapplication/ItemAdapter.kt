@@ -1,15 +1,17 @@
 package com.example.myapplication
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.appcompat.view.menu.MenuView.ItemView
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.example.myapplication.databinding.ItemShoppingItemBinding
 
 
-class ItemAdapter : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>(){
+class ItemAdapter(private val context: Context) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>(){
 
     class ItemViewHolder(val binding: ItemShoppingItemBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -43,6 +45,12 @@ class ItemAdapter : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>(){
         holder.binding.apply {
             val item = items[position]
             titleTV.text = item.title
+
+            Glide.with(context)
+                .load(item.image)
+                .fitCenter()
+                .override(itemImageView.width, itemImageView.height)
+                .into(itemImageView)
         }
     }
 
