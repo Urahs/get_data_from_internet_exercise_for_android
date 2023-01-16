@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myapplication.databinding.ItemShoppingItemBinding
+import com.example.myapplication.network.Item
 
 
 class ItemAdapter(private val context: Context) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>(){
@@ -43,13 +44,19 @@ class ItemAdapter(private val context: Context) : RecyclerView.Adapter<ItemAdapt
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
         holder.binding.apply {
             val item = items[position]
+
+            // title
             titleTV.text = item.title
 
+            // image
             Glide.with(context)
                 .load(item.image)
                 .fitCenter()
                 .override(itemImageView.width, itemImageView.height)
                 .into(itemImageView)
+
+            // description
+            itemDescriptionTV.text = getString()
         }
     }
 

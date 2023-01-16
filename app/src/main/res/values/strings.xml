@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">My Application</string>
+
+    <string name="item_description">Description: $s</string>
+    <string name="item_price">Price: %1$s%2$s</string>
+    <string name="money_type_dollar">$</string>
+    <string name="money_type_turkish_lira">₺</string>
+    <string name="item_rating">Rating: %1$d (%2$s people)</string>
+
 </resources>

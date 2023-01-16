@@ -1,6 +1,5 @@
 package com.example.myapplication.network
 
-import com.example.myapplication.ItemApiService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

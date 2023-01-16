@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.network
 
 data class Item(
     val category: String,

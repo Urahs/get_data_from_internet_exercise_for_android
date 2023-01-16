@@ -36,26 +36,5 @@ class MainActivity : AppCompatActivity() {
         }
 
         viewModel.getItemData()
-        /*
-        lifecycleScope.launch(Dispatchers.IO){
-
-            try {
-                val response = NetworkInstance.api.getItemData()
-                withContext(Dispatchers.Main){
-                    binding.itemRecyclerView.adapter = itemAdapter
-                    itemAdapter!!.items = response.body()!!
-                    itemAdapter!!.notifyDataSetChanged()
-                }
-            }
-            catch (e: Exception) {
-                Log.d("TEST", "CRASHHHHHHHH!!!!")
-            }
-
-        }
-         */
-
-
     }
-
-
 }
