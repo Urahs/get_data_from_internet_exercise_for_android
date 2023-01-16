@@ -1,8 +1,12 @@
 package com.example.myapplication
 
 import android.content.Context
+import android.content.res.Resources
+import android.provider.Settings.Secure.getString
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -56,7 +60,19 @@ class ItemAdapter(private val context: Context) : RecyclerView.Adapter<ItemAdapt
                 .into(itemImageView)
 
             // description
-            itemDescriptionTV.text = getString()
+            itemDescriptionTV.text =  context.getString(R.string.item_description, item.description)
+
+            // price
+            priceTV.text = String.format(
+                context.getString(R.string.item_price),
+                item.price,
+                context.getString(R.string.money_type_dollar))
+
+            // rating
+            ratingTV.text = String.format(
+                context.getString(R.string.item_rating),
+                item.rating.rate,
+                item.rating.count)
         }
     }
 
