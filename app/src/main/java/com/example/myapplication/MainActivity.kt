@@ -27,6 +27,8 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        viewModel.getItemData()
+
         var itemAdapter = ItemAdapter(this)
         binding.itemRecyclerView.adapter = itemAdapter
 
@@ -35,6 +37,6 @@ class MainActivity : AppCompatActivity() {
             itemAdapter!!.notifyDataSetChanged()
         }
 
-        viewModel.getItemData()
+
     }
 }

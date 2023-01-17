@@ -2,7 +2,13 @@ package com.example.myapplication
 
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.Typeface
 import android.provider.Settings.Secure.getString
+import android.text.SpannableString
+import android.text.Spanned
+import android.text.style.StyleSpan
+import android.text.style.TypefaceSpan
+import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -46,8 +52,12 @@ class ItemAdapter(private val context: Context) : RecyclerView.Adapter<ItemAdapt
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
+
+        //holder.binding.statusImage.setImageResource(R.drawable.loading_animation)
+
         holder.binding.apply {
             val item = items[position]
+            var spannableString: SpannableString
 
             // title
             titleTV.text = item.title
@@ -60,21 +70,36 @@ class ItemAdapter(private val context: Context) : RecyclerView.Adapter<ItemAdapt
                 .into(itemImageView)
 
             // description
-            itemDescriptionTV.text =  context.getString(R.string.item_description, item.description)
+            spannableString = SpannableString(context.getString(R.string.item_description, item.description))
+            itemDescriptionTV.text = boldIntroductionOfText(spannableString, "description:".length)
 
             // price
-            priceTV.text = String.format(
+            spannableString = SpannableString(String.format(
                 context.getString(R.string.item_price),
                 item.price,
-                context.getString(R.string.money_type_dollar))
+                context.getString(R.string.money_type_dollar)))
+            priceTV.text = boldIntroductionOfText(spannableString, "price:".length)
 
             // rating
-            ratingTV.text = String.format(
+            spannableString = SpannableString(String.format(
                 context.getString(R.string.item_rating),
                 item.rating.rate,
-                item.rating.count)
+                item.rating.count))
+            ratingTV.text = boldIntroductionOfText(spannableString, "rating:".length)
         }
     }
+
+    private fun boldIntroductionOfText(spannableString: SpannableString, endIndex: Int): SpannableString{
+        val styleSpan = StyleSpan(Typeface.BOLD)
+        spannableString.setSpan(
+            styleSpan,
+            0,
+            endIndex,
+            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE)
+
+        return spannableString
+    }
+
 
     override fun getItemCount(): Int = items.size
 }
