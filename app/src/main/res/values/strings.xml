@@ -1,10 +1,14 @@
 <resources>
-    <string name="app_name">Fake Store</string>
+    <string name="app_name">Fake Store Items</string>
 
     <string name="item_description">Description: %1$s</string>
     <string name="item_price">Price: %1$s%2$s</string>
     <string name="money_type_dollar">$</string>
     <string name="money_type_turkish_lira">₺</string>
     <string name="item_rating">Rating: %1$.1f (%2$s people)</string>
+
+
+    <string name="title_categories">Categories</string>
+    <string name="title_items">Items</string>
 
 </resources>

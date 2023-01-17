@@ -1,20 +1,10 @@
 package com.example.myapplication
 
-import android.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
-import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.withCreated
 import com.example.myapplication.databinding.ActivityMainBinding
-import com.example.myapplication.databinding.ItemShoppingItemBinding
-import com.example.myapplication.network.Item
-import com.example.myapplication.network.NetworkInstance
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
-import retrofit2.Retrofit
 
 class MainActivity : AppCompatActivity() {
 
@@ -29,18 +19,33 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        viewModel.getItemData()
+        viewModel.getAllItemsData()
+        viewModel.getCategoryNamesData()
 
+        initializeItemAdapter()
+        initializeCategoryAdapter()
+    }
+
+    private fun initializeCategoryAdapter() {
+        var categoryAdapter = CategoryAdapter(this)
+        binding.categoryRecyclerView.adapter = categoryAdapter
+
+        viewModel.categoryNames.observe(this){ categoryNameList ->
+            Log.d("TEST", categoryNameList[0])
+            categoryAdapter!!.categories = categoryNameList
+            categoryAdapter!!.notifyDataSetChanged()
+        }
+    }
+
+    private fun initializeItemAdapter() {
         var itemAdapter = ItemAdapter(this)
         binding.itemRecyclerView.adapter = itemAdapter
 
         viewModel.items.observe(this){ itemDataList ->
+            //Log.d("TEST", itemDataList[0].category)
             itemAdapter!!.items = itemDataList
             itemAdapter!!.notifyDataSetChanged()
         }
-
-
-
     }
 
     /*
