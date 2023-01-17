@@ -1,9 +1,12 @@
 package com.example.myapplication
 
 import android.app.AlertDialog
+import android.app.Dialog
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.Color
 import android.graphics.Typeface
+import android.graphics.drawable.ColorDrawable
 import android.provider.Settings.Secure.getString
 import android.text.SpannableString
 import android.text.Spanned
@@ -13,6 +16,8 @@ import android.text.style.UnderlineSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -60,12 +65,13 @@ class ItemAdapter(private val context: Context) : RecyclerView.Adapter<ItemAdapt
             val item = items[position]
             var spannableString: SpannableString
 
-            // title
-            titleTV.text = item.title
 
             cardView.setOnClickListener{
                 showDialog(item)
             }
+
+            // title
+            titleTV.text = item.title
 
             // image
             Glide.with(context)
@@ -107,16 +113,49 @@ class ItemAdapter(private val context: Context) : RecyclerView.Adapter<ItemAdapt
 
 
     private fun showDialog(item: Item) {
-        val builder = AlertDialog.Builder(context)
-        builder.setTitle("Item Details")
-        builder.setMessage("Name: ${item.title}\nDescription: ${item.description}")
-        builder.setPositiveButton("OK") { _, _ ->
-            // Perform any action when OK button is clicked
-        }
-        val dialog = builder.create()
+
+        val dialog = Dialog(context)
+        dialog.setContentView(R.layout.item_details_popup)
+        dialog.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog.setTitle("Item Details")
+
+        val titleTV = dialog.findViewById<TextView>(R.id.titleTV)
+        val itemDescriptionTV = dialog.findViewById<TextView>(R.id.itemDescriptionTV)
+        val ratingTV = dialog.findViewById<TextView>(R.id.ratingTV)
+        val priceTV = dialog.findViewById<TextView>(R.id.priceTV)
+        val imageView = dialog.findViewById<ImageView>(R.id.itemImageView)
+        var spannableString: SpannableString
+
+        // title
+        titleTV.text = item.title
+
+        // description
+        spannableString = SpannableString(context.getString(R.string.item_description, item.description))
+        itemDescriptionTV.text = boldIntroductionOfText(spannableString, "description:".length)
+
+        // image
+        Glide.with(context)
+            .load(item.image)
+            .fitCenter()
+            .override(imageView.width, imageView.height)
+            .into(imageView)
+
+        // price
+        spannableString = SpannableString(String.format(
+            context.getString(R.string.item_price),
+            item.price,
+            context.getString(R.string.money_type_dollar)))
+        priceTV.text = boldIntroductionOfText(spannableString, "price:".length)
+
+        // rating
+        spannableString = SpannableString(String.format(
+            context.getString(R.string.item_rating),
+            item.rating.rate,
+            item.rating.count))
+        ratingTV.text = boldIntroductionOfText(spannableString, "rating:".length)
+
         dialog.show()
     }
-
 
     override fun getItemCount(): Int = items.size
 }
