@@ -30,14 +30,10 @@ class MainActivity : AppCompatActivity() {
         var categoryAdapter = CategoryAdapter(this)
         binding.categoryRecyclerView.adapter = categoryAdapter
 
-        categoryAdapter!!.categories = listOf("adam", "elektry", "bina")
-        categoryAdapter!!.notifyDataSetChanged()
-        /*
         viewModel.categoryNames.observe(this){ categoryNameList ->
             categoryAdapter!!.categories = categoryNameList
             categoryAdapter!!.notifyDataSetChanged()
         }
-         */
     }
 
     private fun initializeItemAdapter() {
