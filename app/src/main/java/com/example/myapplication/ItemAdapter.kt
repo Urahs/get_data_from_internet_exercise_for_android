@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.res.Resources
 import android.graphics.Typeface
@@ -62,6 +63,10 @@ class ItemAdapter(private val context: Context) : RecyclerView.Adapter<ItemAdapt
             // title
             titleTV.text = item.title
 
+            cardView.setOnClickListener{
+                showDialog(item)
+            }
+
             // image
             Glide.with(context)
                 .load(item.image)
@@ -101,6 +106,20 @@ class ItemAdapter(private val context: Context) : RecyclerView.Adapter<ItemAdapt
     }
 
 
+    private fun showDialog(item: Item) {
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("Item Details")
+        builder.setMessage("Name: ${item.title}\nDescription: ${item.description}")
+        builder.setPositiveButton("OK") { _, _ ->
+            // Perform any action when OK button is clicked
+        }
+        val dialog = builder.create()
+        dialog.show()
+    }
+
+
     override fun getItemCount(): Int = items.size
 }
+
+
 

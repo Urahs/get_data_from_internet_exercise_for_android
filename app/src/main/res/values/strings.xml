@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My Application</string>
+    <string name="app_name">Fake Store</string>
 
     <string name="item_description">Description: %1$s</string>
     <string name="item_price">Price: %1$s%2$s</string>
