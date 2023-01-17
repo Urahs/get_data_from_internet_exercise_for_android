@@ -59,12 +59,9 @@ class ItemAdapter(private val context: Context) : RecyclerView.Adapter<ItemAdapt
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
 
-        //holder.binding.statusImage.setImageResource(R.drawable.loading_animation)
-
         holder.binding.apply {
             val item = items[position]
             var spannableString: SpannableString
-
 
             cardView.setOnClickListener{
                 showDialog(item)

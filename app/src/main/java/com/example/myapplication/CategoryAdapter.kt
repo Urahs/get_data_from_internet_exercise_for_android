@@ -42,8 +42,6 @@ class CategoryAdapter(private val activity: AppCompatActivity) : RecyclerView.Ad
         get() = differ.currentList
         set(value) {differ.submitList(value)}
 
-
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         return CategoryViewHolder(
             ItemCategoryBinding.inflate(
@@ -55,19 +53,27 @@ class CategoryAdapter(private val activity: AppCompatActivity) : RecyclerView.Ad
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        holder.binding.categoryNameTV.text = categories[position]
 
         val viewModel: MainViewModel by lazy {
             ViewModelProvider(activity).get(MainViewModel::class.java)
         }
 
+        holder.binding.categoryNameTV.text = categories[position]
+
         holder.binding.cardView.setOnClickListener {
             if(position == 0)
                 viewModel.getAllItemsData()
-            else{
+            else
                 viewModel.getCategoryItemsData(categories[position])
-                Log.d("TEST", "IT WORKSSSSS")
-            }
+
+            viewModel.updateSelectedCategory(position)
+        }
+
+        viewModel.selectedCategory.observe(activity){
+            if(position == viewModel.selectedCategory.value)
+                holder.binding.cardView.setCardBackgroundColor(Color.parseColor(viewModel.selectedCategoryCardBackgroundColor))
+            else
+                holder.binding.cardView.setCardBackgroundColor(Color.WHITE)
         }
     }
 

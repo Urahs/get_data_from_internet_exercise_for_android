@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
 
         viewModel.categoryNames.observe(this){ categoryNameList ->
             categoryNameList.add(0, "all")
+            viewModel.updateSelectedCategory(0)
             categoryAdapter!!.categories = categoryNameList
             categoryAdapter!!.notifyDataSetChanged()
         }

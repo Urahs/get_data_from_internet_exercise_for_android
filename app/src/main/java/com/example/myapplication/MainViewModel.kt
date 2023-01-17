@@ -18,6 +18,11 @@ class MainViewModel: ViewModel() {
     private val _categoryNames = MutableLiveData<MutableList<String>>()
     val categoryNames: LiveData<MutableList<String>> = _categoryNames
 
+    private val _selectedCategory = MutableLiveData(0)
+    val selectedCategory: LiveData<Int> = _selectedCategory
+
+    val selectedCategoryCardBackgroundColor = "#b495f0"
+
     fun getAllItemsData(){
         viewModelScope.launch(Dispatchers.IO) {
             try {
@@ -67,5 +72,9 @@ class MainViewModel: ViewModel() {
                 Log.d("TEST", "CATCHHHH")
             }
         }
+    }
+
+    fun updateSelectedCategory(selectedCategory: Int){
+        _selectedCategory.value = selectedCategory
     }
 }
