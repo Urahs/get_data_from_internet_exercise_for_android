@@ -8,7 +8,7 @@ interface FakeStoreApiService {
     @GET("/products")
     suspend fun getAllItemsData(): Response<List<Item>>
 
-    @GET("/categories")
+    @GET("/products/categories")
     suspend fun getCategoriesData(): Response<List<String>>
 
     @GET("/category/{category_name}")

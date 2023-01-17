@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -42,11 +43,11 @@ class MainViewModel: ViewModel() {
                     _categoryNames.postValue(response.body()!!)
                 }
                 else{
-
+                    Log.d("TEST", "ELSEEEE")
                 }
             }
             catch (e: Exception) {
-
+                Log.d("TEST", "CATCHHHH")
             }
         }
     }
