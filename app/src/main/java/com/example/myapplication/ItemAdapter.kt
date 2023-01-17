@@ -71,7 +71,10 @@ class ItemAdapter(private val context: Context) : RecyclerView.Adapter<ItemAdapt
             }
 
             // title
-            titleTV.text = item.title
+            if(item.title.length > 20)
+                titleTV.text = item.title.take(18) + "..."
+            else
+                titleTV.text = item.title
 
             // image
             Glide.with(context)
@@ -80,23 +83,12 @@ class ItemAdapter(private val context: Context) : RecyclerView.Adapter<ItemAdapt
                 .override(itemImageView.width, itemImageView.height)
                 .into(itemImageView)
 
-            // description
-            spannableString = SpannableString(context.getString(R.string.item_description, item.description))
-            itemDescriptionTV.text = boldIntroductionOfText(spannableString, "description:".length)
-
             // price
             spannableString = SpannableString(String.format(
                 context.getString(R.string.item_price),
                 item.price,
                 context.getString(R.string.money_type_dollar)))
             priceTV.text = boldIntroductionOfText(spannableString, "price:".length)
-
-            // rating
-            spannableString = SpannableString(String.format(
-                context.getString(R.string.item_rating),
-                item.rating.rate,
-                item.rating.count))
-            ratingTV.text = boldIntroductionOfText(spannableString, "rating:".length)
         }
     }
 

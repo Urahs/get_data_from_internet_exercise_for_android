@@ -9,8 +9,8 @@ interface FakeStoreApiService {
     suspend fun getAllItemsData(): Response<List<Item>>
 
     @GET("/products/categories")
-    suspend fun getCategoriesData(): Response<List<String>>
+    suspend fun getCategoriesData(): Response<MutableList<String>>
 
-    @GET("/category/{category_name}")
+    @GET("/products/category/{category_name}")
     suspend fun getCategoryItems(@Path("category_name") categoryName: String): Response<List<Item>>
 }

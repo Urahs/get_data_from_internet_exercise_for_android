@@ -31,6 +31,7 @@ class MainActivity : AppCompatActivity() {
         binding.categoryRecyclerView.adapter = categoryAdapter
 
         viewModel.categoryNames.observe(this){ categoryNameList ->
+            categoryNameList.add(0, "all")
             categoryAdapter!!.categories = categoryNameList
             categoryAdapter!!.notifyDataSetChanged()
         }
@@ -45,17 +46,4 @@ class MainActivity : AppCompatActivity() {
             itemAdapter!!.notifyDataSetChanged()
         }
     }
-
-    /*
-    private fun showDialog(item: Item) {
-        val builder = AlertDialog.Builder(this)
-        builder.setTitle("Item Details")
-        builder.setMessage("Name: ${item.title}\nDescription: ${item.description}")
-        builder.setPositiveButton("OK") { _, _ ->
-            // Perform any action when OK button is clicked
-        }
-        val dialog = builder.create()
-        dialog.show()
-    }
-     */
 }
