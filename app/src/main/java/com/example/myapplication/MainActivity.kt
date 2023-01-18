@@ -29,13 +29,6 @@ class MainActivity : AppCompatActivity() {
         setVisibilityOfProgress()
     }
 
-    private fun setVisibilityOfProgress() {
-        viewModel.loadingItems.observe(this){
-            binding.loadingIV!!.visibility = if (it == ApiStatus.DONE) View.INVISIBLE else View.VISIBLE
-            binding.itemRecyclerView.visibility = if (it == ApiStatus.DONE) View.VISIBLE else View.INVISIBLE
-        }
-    }
-
     private fun initializeCategoryAdapter() {
         var categoryAdapter = CategoryAdapter(this)
         binding.categoryRecyclerView.adapter = categoryAdapter
@@ -53,6 +46,29 @@ class MainActivity : AppCompatActivity() {
         viewModel.items.observe(this){ itemDataList ->
             itemAdapter!!.items = itemDataList
             itemAdapter!!.notifyDataSetChanged()
+        }
+    }
+
+    private fun setVisibilityOfProgress() {
+        viewModel.loadingStatus.observe(this){ status ->
+
+            when (status) {
+                ApiStatus.LOADING -> {
+                    binding.loadingIV.visibility = View.VISIBLE
+                    binding.itemRecyclerView.visibility = View.INVISIBLE
+                    binding.loadingIV.setImageResource(R.drawable.loading_animation)
+                }
+                ApiStatus.ERROR -> {
+                    binding.loadingIV.visibility = View.VISIBLE
+                    binding.itemRecyclerView.visibility = View.INVISIBLE
+                    binding.loadingIV.setImageResource(R.drawable.ic_connection_error)
+                }
+                ApiStatus.DONE -> {
+                    binding.itemRecyclerView.visibility = View.VISIBLE
+                    binding.loadingIV.visibility = View.INVISIBLE
+                }
+                else -> {}
+            }
         }
     }
 }

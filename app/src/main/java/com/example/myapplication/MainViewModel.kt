@@ -27,8 +27,8 @@ class MainViewModel: ViewModel() {
     private val _selectedCategory = MutableLiveData(0)
     val selectedCategory: LiveData<Int> = _selectedCategory
 
-    private val _loadingItems = MutableLiveData(ApiStatus.LOADING)
-    val loadingItems: LiveData<ApiStatus> = _loadingItems
+    private val _loadingStatus = MutableLiveData(ApiStatus.LOADING)
+    val loadingStatus: LiveData<ApiStatus> = _loadingStatus
 
     val selectedCategoryCardBackgroundColor = "#b495f0"
 
@@ -36,11 +36,11 @@ class MainViewModel: ViewModel() {
     fun getAllItemsData(){
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                _loadingItems.postValue(ApiStatus.LOADING)
+                _loadingStatus.postValue(ApiStatus.LOADING)
                 val response = NetworkInstance.api.getAllItemsData()
                 if(response.isSuccessful && response.body() != null){
                     _items.postValue(response.body()!!)
-                    _loadingItems.postValue(ApiStatus.DONE)
+                    _loadingStatus.postValue(ApiStatus.DONE)
                 }
             }
             catch (e: Exception) {
@@ -52,11 +52,11 @@ class MainViewModel: ViewModel() {
     fun getCategoryNamesData(){
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                _loadingItems.postValue(ApiStatus.LOADING)
+                _loadingStatus.postValue(ApiStatus.LOADING)
                 val response = NetworkInstance.api.getCategoriesData()
                 if(response.isSuccessful && response.body() != null){
                     _categoryNames.postValue((mutableListOf("all") + response.body()!!) as MutableList<String>?)
-                    _loadingItems.postValue(ApiStatus.DONE)
+                    _loadingStatus.postValue(ApiStatus.DONE)
                 }
             }
             catch (e: Exception) {
@@ -68,11 +68,11 @@ class MainViewModel: ViewModel() {
     fun getCategoryItemsData(categoryName: String){
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                _loadingItems.postValue(ApiStatus.LOADING)
+                _loadingStatus.postValue(ApiStatus.LOADING)
                 val response = NetworkInstance.api.getCategoryItems(categoryName)
                 if(response.isSuccessful && response.body() != null){
                     _items.postValue(response.body()!!)
-                    _loadingItems.postValue(ApiStatus.DONE)
+                    _loadingStatus.postValue(ApiStatus.DONE)
                 }
             }
             catch (e: Exception) {
@@ -83,7 +83,7 @@ class MainViewModel: ViewModel() {
 
     private fun errorHandler() {
         Log.d("TEST", "Unable to load the data")
-        _loadingItems.postValue(ApiStatus.ERROR)
+        _loadingStatus.postValue(ApiStatus.ERROR)
     }
 
     fun updateSelectedCategory(selectedCategory: Int){
