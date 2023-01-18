@@ -61,12 +61,17 @@ class CategoryAdapter(private val activity: AppCompatActivity) : RecyclerView.Ad
         holder.binding.categoryNameTV.text = categories[position]
 
         holder.binding.cardView.setOnClickListener {
-            if(position == 0)
-                viewModel.getAllItemsData()
-            else
-                viewModel.getCategoryItemsData(categories[position])
+            if(viewModel.selectedCategory.value != position){
 
-            viewModel.updateSelectedCategory(position)
+                viewModel.emptyItemAdapterList()
+
+                if(position == 0)
+                    viewModel.getAllItemsData()
+                else
+                    viewModel.getCategoryItemsData(categories[position])
+
+                viewModel.updateSelectedCategory(position)
+            }
         }
 
         viewModel.selectedCategory.observe(activity){

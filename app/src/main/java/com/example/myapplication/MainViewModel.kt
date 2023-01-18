@@ -21,15 +21,21 @@ class MainViewModel: ViewModel() {
     private val _selectedCategory = MutableLiveData(0)
     val selectedCategory: LiveData<Int> = _selectedCategory
 
+    private val _loadingItems = MutableLiveData(true)
+    val loadingItems: LiveData<Boolean> = _loadingItems
+
     val selectedCategoryCardBackgroundColor = "#b495f0"
 
 
     fun getAllItemsData(){
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                _loadingItems.postValue(true)
                 val response = NetworkInstance.api.getAllItemsData()
-                if(response.isSuccessful && response.body() != null)
+                if(response.isSuccessful && response.body() != null){
                     _items.postValue(response.body()!!)
+                    _loadingItems.postValue(false)
+                }
             }
             catch (e: Exception) {
                 Log.d("TEST", "Unable to load the data")
@@ -40,9 +46,12 @@ class MainViewModel: ViewModel() {
     fun getCategoryNamesData(){
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                _loadingItems.postValue(true)
                 val response = NetworkInstance.api.getCategoriesData()
-                if(response.isSuccessful && response.body() != null)
+                if(response.isSuccessful && response.body() != null){
                     _categoryNames.postValue(response.body()!!)
+                    _loadingItems.postValue(false)
+                }
             }
             catch (e: Exception) {
                 Log.d("TEST", "Unable to load the data")
@@ -53,9 +62,12 @@ class MainViewModel: ViewModel() {
     fun getCategoryItemsData(categoryName: String){
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                _loadingItems.postValue(true)
                 val response = NetworkInstance.api.getCategoryItems(categoryName)
-                if(response.isSuccessful && response.body() != null)
+                if(response.isSuccessful && response.body() != null){
                     _items.postValue(response.body()!!)
+                    _loadingItems.postValue(false)
+                }
             }
             catch (e: Exception) {
                 Log.d("TEST", "Unable to load the data")
@@ -65,5 +77,9 @@ class MainViewModel: ViewModel() {
 
     fun updateSelectedCategory(selectedCategory: Int){
         _selectedCategory.value = selectedCategory
+    }
+
+    fun emptyItemAdapterList(){
+        _items.value = listOf()
     }
 }

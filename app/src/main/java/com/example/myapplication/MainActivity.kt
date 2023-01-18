@@ -2,7 +2,7 @@ package com.example.myapplication
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.myapplication.databinding.ActivityMainBinding
@@ -26,6 +26,11 @@ class MainActivity : AppCompatActivity() {
 
         initializeItemAdapter()
         initializeCategoryAdapter()
+
+        viewModel.loadingItems.observe(this){
+            binding.loadingTV.visibility = if (it == true) View.VISIBLE else View.INVISIBLE
+            binding.itemRecyclerView.visibility = if (it == false) View.VISIBLE else View.INVISIBLE
+        }
 
 
     }
