@@ -23,19 +23,16 @@ class MainViewModel: ViewModel() {
 
     val selectedCategoryCardBackgroundColor = "#b495f0"
 
+
     fun getAllItemsData(){
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = NetworkInstance.api.getAllItemsData()
-                if(response.isSuccessful && response.body() != null){
+                if(response.isSuccessful && response.body() != null)
                     _items.postValue(response.body()!!)
-                }
-                else{
-
-                }
             }
             catch (e: Exception) {
-
+                Log.d("TEST", "Unable to load the data")
             }
         }
     }
@@ -44,15 +41,11 @@ class MainViewModel: ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = NetworkInstance.api.getCategoriesData()
-                if(response.isSuccessful && response.body() != null){
+                if(response.isSuccessful && response.body() != null)
                     _categoryNames.postValue(response.body()!!)
-                }
-                else{
-                    Log.d("TEST", "ELSEEEE")
-                }
             }
             catch (e: Exception) {
-                Log.d("TEST", "CATCHHHH")
+                Log.d("TEST", "Unable to load the data")
             }
         }
     }
@@ -61,15 +54,11 @@ class MainViewModel: ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 val response = NetworkInstance.api.getCategoryItems(categoryName)
-                if(response.isSuccessful && response.body() != null){
+                if(response.isSuccessful && response.body() != null)
                     _items.postValue(response.body()!!)
-                }
-                else{
-                    Log.d("TEST", "ELSEEEE")
-                }
             }
             catch (e: Exception) {
-                Log.d("TEST", "CATCHHHH")
+                Log.d("TEST", "Unable to load the data")
             }
         }
     }
