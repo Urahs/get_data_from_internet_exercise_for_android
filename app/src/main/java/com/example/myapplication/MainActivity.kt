@@ -21,15 +21,18 @@ class MainActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         setContentView(binding.root)
 
-        viewModel.getAllItemsData()
         viewModel.getCategoryNamesData()
+        viewModel.handleItemListForConfigChanges()
 
         initializeItemAdapter()
         initializeCategoryAdapter()
+        setVisibilityOfProgress()
+    }
 
+    private fun setVisibilityOfProgress() {
         viewModel.loadingItems.observe(this){
-            binding.loadingTV.visibility = if (it == true) View.VISIBLE else View.INVISIBLE
-            binding.itemRecyclerView.visibility = if (it == false) View.VISIBLE else View.INVISIBLE
+            binding.loadingIV!!.visibility = if (it == ApiStatus.DONE) View.INVISIBLE else View.VISIBLE
+            binding.itemRecyclerView.visibility = if (it == ApiStatus.DONE) View.VISIBLE else View.INVISIBLE
         }
     }
 

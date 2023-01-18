@@ -1,24 +1,17 @@
 package com.example.myapplication
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
-import android.content.res.Resources
 import android.graphics.Color
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
-import android.provider.Settings.Secure.getString
 import android.text.SpannableString
 import android.text.Spanned
 import android.text.style.StyleSpan
-import android.text.style.TypefaceSpan
-import android.text.style.UnderlineSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.res.ResourcesCompat
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -45,7 +38,6 @@ class ItemAdapter(private val context: Context) : RecyclerView.Adapter<ItemAdapt
     var items: List<Item>
         get() = differ.currentList
         set(value) {differ.submitList(value)}
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(
@@ -95,7 +87,6 @@ class ItemAdapter(private val context: Context) : RecyclerView.Adapter<ItemAdapt
 
         return spannableString
     }
-
 
     private fun showDialog(item: Item) {
 

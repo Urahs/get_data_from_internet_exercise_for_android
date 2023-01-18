@@ -1,27 +1,14 @@
 package com.example.myapplication
 
-import android.app.Dialog
-import android.content.Context
 import android.graphics.Color
-import android.graphics.Typeface
-import android.graphics.drawable.ColorDrawable
-import android.text.SpannableString
-import android.text.Spanned
-import android.text.style.StyleSpan
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.example.myapplication.databinding.ItemCategoryBinding
-import com.example.myapplication.network.Item
-
 
 class CategoryAdapter(private val activity: AppCompatActivity) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>(){
 
