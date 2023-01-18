@@ -31,8 +31,6 @@ class MainActivity : AppCompatActivity() {
             binding.loadingTV.visibility = if (it == true) View.VISIBLE else View.INVISIBLE
             binding.itemRecyclerView.visibility = if (it == false) View.VISIBLE else View.INVISIBLE
         }
-
-
     }
 
     private fun initializeCategoryAdapter() {
@@ -40,8 +38,6 @@ class MainActivity : AppCompatActivity() {
         binding.categoryRecyclerView.adapter = categoryAdapter
 
         viewModel.categoryNames.observe(this){ categoryNameList ->
-            categoryNameList.add(0, "all")
-            viewModel.updateSelectedCategory(0)
             categoryAdapter!!.categories = categoryNameList
             categoryAdapter!!.notifyDataSetChanged()
         }

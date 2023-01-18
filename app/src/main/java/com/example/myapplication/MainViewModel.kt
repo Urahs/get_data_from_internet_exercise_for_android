@@ -49,7 +49,7 @@ class MainViewModel: ViewModel() {
                 _loadingItems.postValue(true)
                 val response = NetworkInstance.api.getCategoriesData()
                 if(response.isSuccessful && response.body() != null){
-                    _categoryNames.postValue(response.body()!!)
+                    _categoryNames.postValue((mutableListOf("all") + response.body()!!) as MutableList<String>?)
                     _loadingItems.postValue(false)
                 }
             }
