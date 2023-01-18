@@ -68,7 +68,7 @@ class ItemAdapter(private val context: Context) : RecyclerView.Adapter<ItemAdapt
             }
 
             // title
-            if(item.title.length > 20)
+            if(item.title.length > 21)
                 titleTV.text = item.title.take(18) + "..."
             else
                 titleTV.text = item.title
@@ -81,11 +81,7 @@ class ItemAdapter(private val context: Context) : RecyclerView.Adapter<ItemAdapt
                 .into(itemImageView)
 
             // price
-            spannableString = SpannableString(String.format(
-                context.getString(R.string.item_price),
-                item.price,
-                context.getString(R.string.money_type_dollar)))
-            priceTV.text = boldIntroductionOfText(spannableString, "price:".length)
+            priceTV.text = item.price.toString() + context.getString(R.string.money_type_dollar)
         }
     }
 
