@@ -1,5 +1,6 @@
 package com.example.myapplication
 
+import android.graphics.Color
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -42,6 +43,8 @@ class MainViewModel: ViewModel() {
                     _items.postValue(response.body()!!)
                     _loadingStatus.postValue(ApiStatus.DONE)
                 }
+                else
+                    errorHandler()
             }
             catch (e: Exception) {
                 errorHandler()
@@ -58,6 +61,8 @@ class MainViewModel: ViewModel() {
                     _categoryNames.postValue((mutableListOf("all") + response.body()!!) as MutableList<String>?)
                     _loadingStatus.postValue(ApiStatus.DONE)
                 }
+                else
+                    errorHandler()
             }
             catch (e: Exception) {
                 errorHandler()
@@ -74,6 +79,8 @@ class MainViewModel: ViewModel() {
                     _items.postValue(response.body()!!)
                     _loadingStatus.postValue(ApiStatus.DONE)
                 }
+                else
+                    errorHandler()
             }
             catch (e: Exception) {
                 errorHandler()
@@ -99,5 +106,29 @@ class MainViewModel: ViewModel() {
             getAllItemsData()
         else
             getCategoryItemsData(categoryNames.value!!.get(selectedCategory.value!!))
+    }
+
+    fun categoryItemClickListener(position: Int) {
+        if(selectedCategory.value != position){
+
+            emptyItemAdapterList()
+
+            if(position == 0)
+                getAllItemsData()
+            else
+                getCategoryItemsData(categoryNames.value!![position])
+
+            updateSelectedCategory(position)
+
+
+        }
+    }
+
+    fun getCategoryBgColor(position: Int): Int {
+
+        return if(position == selectedCategory.value)
+            Color.parseColor(selectedCategoryCardBackgroundColor)
+        else
+            Color.WHITE
     }
 }

@@ -5,14 +5,18 @@ import android.os.Bundle
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
+import com.example.myapplication.adapters.CategoryAdapter
+import com.example.myapplication.adapters.CategoryAdapterFunctions
+import com.example.myapplication.adapters.ItemAdapter
 import com.example.myapplication.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), CategoryAdapterFunctions {
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel by viewModels<MainViewModel>()
+    var categoryAdapter = CategoryAdapter(::categoryItemClickListener, ::getCategoryBgColor, ::isCategorySelected)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,12 +34,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initializeCategoryAdapter() {
-        var categoryAdapter = CategoryAdapter(this)
         binding.categoryRecyclerView.adapter = categoryAdapter
 
         viewModel.categoryNames.observe(this){ categoryNameList ->
-            categoryAdapter!!.categories = categoryNameList
-            categoryAdapter!!.notifyDataSetChanged()
+            categoryAdapter.categories = categoryNameList
+            categoryAdapter.notifyDataSetChanged()
         }
     }
 
@@ -44,8 +47,8 @@ class MainActivity : AppCompatActivity() {
         binding.itemRecyclerView.adapter = itemAdapter
 
         viewModel.items.observe(this){ itemDataList ->
-            itemAdapter!!.items = itemDataList
-            itemAdapter!!.notifyDataSetChanged()
+            itemAdapter.items = itemDataList
+            itemAdapter.notifyDataSetChanged()
         }
     }
 
@@ -70,5 +73,18 @@ class MainActivity : AppCompatActivity() {
                 else -> {}
             }
         }
+    }
+
+    override fun categoryItemClickListener(position: Int) {
+        viewModel.categoryItemClickListener(position)
+        categoryAdapter.notifyDataSetChanged()
+    }
+
+    override fun getCategoryBgColor(position: Int): Int {
+        return viewModel.getCategoryBgColor(position)
+    }
+
+    fun isCategorySelected(position: String): Boolean{
+        return viewModel.categoryNames.value!![viewModel.selectedCategory.value!!] == position
     }
 }

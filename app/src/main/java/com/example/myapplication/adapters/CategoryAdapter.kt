@@ -1,4 +1,4 @@
-package com.example.myapplication
+package com.example.myapplication.adapters
 
 import android.graphics.Color
 import android.view.LayoutInflater
@@ -8,9 +8,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.example.myapplication.MainViewModel
 import com.example.myapplication.databinding.ItemCategoryBinding
 
-class CategoryAdapter(private val activity: AppCompatActivity) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>(){
+class CategoryAdapter(private val clickListener: (Int) -> (Unit), private val getCategoryBgColor: (Int) -> (Int), val typeSelectionStateDataSource: (String) -> (Boolean)) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>(){
 
     class CategoryViewHolder(val binding: ItemCategoryBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -20,7 +21,7 @@ class CategoryAdapter(private val activity: AppCompatActivity) : RecyclerView.Ad
         }
 
         override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
-            return oldItem == newItem
+            return typeSelectionStateDataSource(oldItem) == typeSelectionStateDataSource(newItem)
         }
     }
 
@@ -41,32 +42,18 @@ class CategoryAdapter(private val activity: AppCompatActivity) : RecyclerView.Ad
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
 
-        val viewModel: MainViewModel by lazy {
-            ViewModelProvider(activity).get(MainViewModel::class.java)
-        }
-
         holder.binding.categoryNameTV.text = categories[position]
 
         holder.binding.cardView.setOnClickListener {
-            if(viewModel.selectedCategory.value != position){
-
-                viewModel.emptyItemAdapterList()
-
-                if(position == 0)
-                    viewModel.getAllItemsData()
-                else
-                    viewModel.getCategoryItemsData(categories[position])
-
-                viewModel.updateSelectedCategory(position)
-            }
+            clickListener(position)
         }
 
-        viewModel.selectedCategory.observe(activity){
-            if(position == viewModel.selectedCategory.value)
-                holder.binding.cardView.setCardBackgroundColor(Color.parseColor(viewModel.selectedCategoryCardBackgroundColor))
-            else
-                holder.binding.cardView.setCardBackgroundColor(Color.WHITE)
-        }
+        //val bgColor = getCategoryBgColor(position)
+        //holder.binding.cardView.setCardBackgroundColor(bgColor)
+        val isSelected = typeSelectionStateDataSource(categories[position])
+        val colorStr = if (isSelected) "#FFAAAA" else "#FFFFFF"
+        //holder.binding.root.setBackgroundColor(Color.parseColor(colorStr))
+        holder.binding.cardView.setCardBackgroundColor(Color.parseColor(colorStr))
     }
 
     override fun getItemCount(): Int = categories.size
