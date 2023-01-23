@@ -1,6 +1,6 @@
 package com.example.myapplication.network
 
-data class Item(
+data class Product(
     val category: String,
     val description: String,
     val id: Int,

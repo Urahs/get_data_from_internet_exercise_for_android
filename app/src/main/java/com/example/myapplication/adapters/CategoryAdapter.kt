@@ -11,7 +11,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.myapplication.MainViewModel
 import com.example.myapplication.databinding.ItemCategoryBinding
 
-class CategoryAdapter(private val clickListener: (Int) -> (Unit), private val getCategoryBgColor: (Int) -> (Int), val typeSelectionStateDataSource: (String) -> (Boolean)) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>(){
+const val selectedCategoryCardBackgroundColor = "#b495f0"
+
+class CategoryAdapter(private val clickListener: (Int) -> (Unit), private val isCategorySelected: (String) -> (Boolean)) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>(){
 
     class CategoryViewHolder(val binding: ItemCategoryBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -21,7 +23,7 @@ class CategoryAdapter(private val clickListener: (Int) -> (Unit), private val ge
         }
 
         override fun areContentsTheSame(oldItem: String, newItem: String): Boolean {
-            return typeSelectionStateDataSource(oldItem) == typeSelectionStateDataSource(newItem)
+            return isCategorySelected(oldItem) == isCategorySelected(newItem)
         }
     }
 
@@ -48,11 +50,8 @@ class CategoryAdapter(private val clickListener: (Int) -> (Unit), private val ge
             clickListener(position)
         }
 
-        //val bgColor = getCategoryBgColor(position)
-        //holder.binding.cardView.setCardBackgroundColor(bgColor)
-        val isSelected = typeSelectionStateDataSource(categories[position])
-        val colorStr = if (isSelected) "#FFAAAA" else "#FFFFFF"
-        //holder.binding.root.setBackgroundColor(Color.parseColor(colorStr))
+        val isSelected = isCategorySelected(categories[position])
+        val colorStr = if (isSelected) selectedCategoryCardBackgroundColor else "#FFFFFF"
         holder.binding.cardView.setCardBackgroundColor(Color.parseColor(colorStr))
     }
 

@@ -6,17 +6,17 @@ import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
 import com.example.myapplication.adapters.CategoryAdapter
-import com.example.myapplication.adapters.CategoryAdapterFunctions
-import com.example.myapplication.adapters.ItemAdapter
+import com.example.myapplication.adapters.RequiredFunctionsForCategoryAdapter
+import com.example.myapplication.adapters.ProductAdapter
 import com.example.myapplication.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity(), CategoryAdapterFunctions {
+class MainActivity : AppCompatActivity(), RequiredFunctionsForCategoryAdapter {
 
     private var _binding: ActivityMainBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel by viewModels<MainViewModel>()
-    var categoryAdapter = CategoryAdapter(::categoryItemClickListener, ::getCategoryBgColor, ::isCategorySelected)
+    var categoryAdapter = CategoryAdapter(::categoryItemClickListener, ::isCategorySelected)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity(), CategoryAdapterFunctions {
     }
 
     private fun initializeItemAdapter() {
-        var itemAdapter = ItemAdapter(this)
+        var itemAdapter = ProductAdapter(this)
         binding.itemRecyclerView.adapter = itemAdapter
 
         viewModel.items.observe(this){ itemDataList ->
@@ -80,11 +80,7 @@ class MainActivity : AppCompatActivity(), CategoryAdapterFunctions {
         categoryAdapter.notifyDataSetChanged()
     }
 
-    override fun getCategoryBgColor(position: Int): Int {
-        return viewModel.getCategoryBgColor(position)
-    }
-
-    fun isCategorySelected(position: String): Boolean{
-        return viewModel.categoryNames.value!![viewModel.selectedCategory.value!!] == position
+    override fun isCategorySelected(category: String): Boolean{
+        return viewModel.isCategorySelected(category)
     }
 }

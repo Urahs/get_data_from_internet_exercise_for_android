@@ -1,12 +1,11 @@
 package com.example.myapplication
 
-import android.graphics.Color
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.myapplication.network.Item
+import com.example.myapplication.network.Product
 import com.example.myapplication.network.NetworkInstance
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -19,8 +18,8 @@ enum class ApiStatus {
 
 class MainViewModel: ViewModel() {
 
-    private val _items = MutableLiveData<List<Item>>()
-    val items: LiveData<List<Item>> = _items
+    private val _items = MutableLiveData<List<Product>>()
+    val items: LiveData<List<Product>> = _items
 
     private val _categoryNames = MutableLiveData<MutableList<String>>()
     val categoryNames: LiveData<MutableList<String>> = _categoryNames
@@ -30,8 +29,6 @@ class MainViewModel: ViewModel() {
 
     private val _loadingStatus = MutableLiveData(ApiStatus.LOADING)
     val loadingStatus: LiveData<ApiStatus> = _loadingStatus
-
-    val selectedCategoryCardBackgroundColor = "#b495f0"
 
 
     fun getAllItemsData(){
@@ -119,16 +116,10 @@ class MainViewModel: ViewModel() {
                 getCategoryItemsData(categoryNames.value!![position])
 
             updateSelectedCategory(position)
-
-
         }
     }
 
-    fun getCategoryBgColor(position: Int): Int {
-
-        return if(position == selectedCategory.value)
-            Color.parseColor(selectedCategoryCardBackgroundColor)
-        else
-            Color.WHITE
+    fun isCategorySelected(category: String): Boolean{
+        return categoryNames.value!![selectedCategory.value!!] == category
     }
 }

@@ -6,11 +6,11 @@ import retrofit2.http.Path
 
 interface FakeStoreApiService {
     @GET("/products")
-    suspend fun getAllItemsData(): Response<List<Item>>
+    suspend fun getAllItemsData(): Response<List<Product>>
 
     @GET("/products/categories")
     suspend fun getCategoriesData(): Response<MutableList<String>>
 
     @GET("/products/category/{category_name}")
-    suspend fun getCategoryItems(@Path("category_name") categoryName: String): Response<List<Item>>
+    suspend fun getCategoryItems(@Path("category_name") categoryName: String): Response<List<Product>>
 }

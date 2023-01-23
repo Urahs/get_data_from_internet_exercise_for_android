@@ -18,25 +18,25 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myapplication.R
 import com.example.myapplication.databinding.ItemShoppingItemBinding
-import com.example.myapplication.network.Item
+import com.example.myapplication.network.Product
 
 
-class ItemAdapter(private val context: Context) : RecyclerView.Adapter<ItemAdapter.ItemViewHolder>(){
+class ProductAdapter(private val context: Context) : RecyclerView.Adapter<ProductAdapter.ItemViewHolder>(){
 
     class ItemViewHolder(val binding: ItemShoppingItemBinding) : RecyclerView.ViewHolder(binding.root)
 
-    private val diffCallBack = object : DiffUtil.ItemCallback<Item>(){
-        override fun areItemsTheSame(oldItem: Item, newItem: Item): Boolean {
+    private val diffCallBack = object : DiffUtil.ItemCallback<Product>(){
+        override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: Item, newItem: Item): Boolean {
+        override fun areContentsTheSame(oldItem: Product, newItem: Product): Boolean {
             return oldItem == newItem
         }
     }
 
     private val differ = AsyncListDiffer(this, diffCallBack)
-    var items: List<Item>
+    var items: List<Product>
         get() = differ.currentList
         set(value) {differ.submitList(value)}
 
@@ -54,7 +54,6 @@ class ItemAdapter(private val context: Context) : RecyclerView.Adapter<ItemAdapt
 
         holder.binding.apply {
             val item = items[position]
-            var spannableString: SpannableString
 
             cardView.setOnClickListener{
                 showDialog(item)
@@ -89,7 +88,7 @@ class ItemAdapter(private val context: Context) : RecyclerView.Adapter<ItemAdapt
         return spannableString
     }
 
-    private fun showDialog(item: Item) {
+    private fun showDialog(item: Product) {
 
         val dialog = Dialog(context)
         dialog.setContentView(R.layout.item_details_popup)
