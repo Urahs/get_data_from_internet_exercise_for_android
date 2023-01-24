@@ -6,11 +6,14 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import com.example.myapplication.adapters.CategoryAdapter
 import com.example.myapplication.adapters.RequiredFunctionsForCategoryAdapter
 import com.example.myapplication.adapters.ProductAdapter
 import com.example.myapplication.databinding.ActivityMainBinding
 import kotlinx.coroutines.flow.onCompletion
+import kotlinx.coroutines.launch
 
 class MainActivity : AppCompatActivity(), RequiredFunctionsForCategoryAdapter {
 
@@ -38,9 +41,12 @@ class MainActivity : AppCompatActivity(), RequiredFunctionsForCategoryAdapter {
     private fun initializeCategoryAdapter() {
         binding.categoryRecyclerView.adapter = categoryAdapter
 
-        viewModel.uiState.observe(this){ uiState ->
-            categoryAdapter.categories = uiState.categoryNames!!
-            categoryAdapter.notifyDataSetChanged()
+        lifecycleScope.launch {
+            viewModel.uiState
+                .flowWithLifecycle(lifecycle)
+                .collect { uiState ->
+                    categoryAdapter.categories = uiState.categoryNames!!
+                }
         }
     }
 
@@ -48,38 +54,38 @@ class MainActivity : AppCompatActivity(), RequiredFunctionsForCategoryAdapter {
         val itemAdapter = ProductAdapter(this)
         binding.itemRecyclerView.adapter = itemAdapter
 
-        viewModel.uiState.observe(this){ uiState ->
-            itemAdapter.items = uiState.items!!
-            itemAdapter.notifyDataSetChanged()
+        lifecycleScope.launch {
+            viewModel.uiState
+                .flowWithLifecycle(lifecycle)
+                .collect { uiState ->
+                    itemAdapter.items = uiState.items!!
+                }
         }
     }
 
     private fun setVisibilityOfProgress() {
 
-
-        viewModel.uiState.observe(this){ uiState ->
-
-            Log.d("TEST", "OOOOOOOOOOAAAAAAAAAAAA")
-
-            when (uiState.loadingStatus) {
-                ApiStatus.LOADING -> {
-                    binding.loadingIV.visibility = View.VISIBLE
-                    binding.itemRecyclerView.visibility = View.INVISIBLE
-                    binding.loadingIV.setImageResource(R.drawable.loading_animation)
-                    Log.d("TEST", "LOADIIINNGGGGG")
+        lifecycleScope.launch {
+            viewModel.uiState
+                .flowWithLifecycle(lifecycle)
+                .collect { uiState ->
+                    when (uiState.loadingStatus) {
+                        ApiStatus.LOADING -> {
+                            binding.loadingIV.visibility = View.VISIBLE
+                            binding.itemRecyclerView.visibility = View.INVISIBLE
+                            binding.loadingIV.setImageResource(R.drawable.loading_animation)
+                        }
+                        ApiStatus.ERROR -> {
+                            binding.loadingIV.visibility = View.VISIBLE
+                            binding.itemRecyclerView.visibility = View.INVISIBLE
+                            binding.loadingIV.setImageResource(R.drawable.ic_connection_error)
+                        }
+                        ApiStatus.DONE -> {
+                            binding.itemRecyclerView.visibility = View.VISIBLE
+                            binding.loadingIV.visibility = View.INVISIBLE
+                        }
+                    }
                 }
-                ApiStatus.ERROR -> {
-                    binding.loadingIV.visibility = View.VISIBLE
-                    binding.itemRecyclerView.visibility = View.INVISIBLE
-                    binding.loadingIV.setImageResource(R.drawable.ic_connection_error)
-                    Log.d("TEST", "ERRRORRRRRR")
-                }
-                ApiStatus.DONE -> {
-                    binding.itemRecyclerView.visibility = View.VISIBLE
-                    binding.loadingIV.visibility = View.INVISIBLE
-                    Log.d("TEST", "DONNEEEEEE")
-                }
-            }
         }
     }
 
