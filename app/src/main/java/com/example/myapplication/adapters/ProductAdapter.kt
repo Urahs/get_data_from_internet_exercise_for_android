@@ -17,13 +17,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.myapplication.R
-import com.example.myapplication.databinding.ItemShoppingItemBinding
+import com.example.myapplication.databinding.ItemShoppingProductBinding
 import com.example.myapplication.network.Product
 
 
 class ProductAdapter(private val context: Context) : RecyclerView.Adapter<ProductAdapter.ItemViewHolder>(){
 
-    class ItemViewHolder(val binding: ItemShoppingItemBinding) : RecyclerView.ViewHolder(binding.root)
+    class ItemViewHolder(val binding: ItemShoppingProductBinding) : RecyclerView.ViewHolder(binding.root)
 
     private val diffCallBack = object : DiffUtil.ItemCallback<Product>(){
         override fun areItemsTheSame(oldItem: Product, newItem: Product): Boolean {
@@ -42,7 +42,7 @@ class ProductAdapter(private val context: Context) : RecyclerView.Adapter<Produc
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(
-            ItemShoppingItemBinding.inflate(
+            ItemShoppingProductBinding.inflate(
                 LayoutInflater.from(parent.context),
                 parent,
                 false
