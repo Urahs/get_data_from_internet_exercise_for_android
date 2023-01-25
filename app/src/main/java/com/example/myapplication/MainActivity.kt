@@ -41,12 +41,8 @@ class MainActivity : AppCompatActivity(), RequiredFunctionsForCategoryAdapter {
     private fun initializeCategoryAdapter() {
         binding.categoryRecyclerView.adapter = categoryAdapter
 
-        lifecycleScope.launch {
-            viewModel.uiState
-                .flowWithLifecycle(lifecycle)
-                .collect { uiState ->
-                    categoryAdapter.categories = uiState.categoryNames!!
-                }
+        viewModel.uiState.observe(this){ uiState ->
+            categoryAdapter.categories = uiState.categoryNames!!
         }
     }
 
@@ -54,38 +50,30 @@ class MainActivity : AppCompatActivity(), RequiredFunctionsForCategoryAdapter {
         val itemAdapter = ProductAdapter(this)
         binding.itemRecyclerView.adapter = itemAdapter
 
-        lifecycleScope.launch {
-            viewModel.uiState
-                .flowWithLifecycle(lifecycle)
-                .collect { uiState ->
-                    itemAdapter.items = uiState.items!!
-                }
+        viewModel.uiState.observe(this){ uiState ->
+            itemAdapter.items = uiState.items!!
         }
     }
 
     private fun setVisibilityOfProgress() {
 
-        lifecycleScope.launch {
-            viewModel.uiState
-                .flowWithLifecycle(lifecycle)
-                .collect { uiState ->
-                    when (uiState.loadingStatus) {
-                        ApiStatus.LOADING -> {
-                            binding.loadingIV.visibility = View.VISIBLE
-                            binding.itemRecyclerView.visibility = View.INVISIBLE
-                            binding.loadingIV.setImageResource(R.drawable.loading_animation)
-                        }
-                        ApiStatus.ERROR -> {
-                            binding.loadingIV.visibility = View.VISIBLE
-                            binding.itemRecyclerView.visibility = View.INVISIBLE
-                            binding.loadingIV.setImageResource(R.drawable.ic_connection_error)
-                        }
-                        ApiStatus.DONE -> {
-                            binding.itemRecyclerView.visibility = View.VISIBLE
-                            binding.loadingIV.visibility = View.INVISIBLE
-                        }
-                    }
+        viewModel.uiState.observe(this){ uiState ->
+            when (uiState.loadingStatus) {
+                ApiStatus.LOADING -> {
+                    binding.loadingIV.visibility = View.VISIBLE
+                    binding.itemRecyclerView.visibility = View.INVISIBLE
+                    binding.loadingIV.setImageResource(R.drawable.loading_animation)
                 }
+                ApiStatus.ERROR -> {
+                    binding.loadingIV.visibility = View.VISIBLE
+                    binding.itemRecyclerView.visibility = View.INVISIBLE
+                    binding.loadingIV.setImageResource(R.drawable.ic_connection_error)
+                }
+                ApiStatus.DONE -> {
+                    binding.itemRecyclerView.visibility = View.VISIBLE
+                    binding.loadingIV.visibility = View.INVISIBLE
+                }
+            }
         }
     }
 
