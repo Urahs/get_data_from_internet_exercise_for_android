@@ -6,15 +6,13 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatDelegate
-import androidx.lifecycle.flowWithLifecycle
-import androidx.lifecycle.lifecycleScope
 import com.example.myapplication.adapters.CategoryAdapter
 import com.example.myapplication.adapters.RequiredFunctionsForCategoryAdapter
 import com.example.myapplication.adapters.ProductAdapter
 import com.example.myapplication.databinding.ActivityMainBinding
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.launch
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity(), RequiredFunctionsForCategoryAdapter {
 
     private var _binding: ActivityMainBinding? = null

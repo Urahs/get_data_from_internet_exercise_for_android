@@ -5,14 +5,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.myapplication.network.FakeStoreApiService
 import com.example.myapplication.network.Product
-import com.example.myapplication.network.NetworkInstance
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 enum class ApiStatus {
     LOADING,
@@ -27,7 +25,10 @@ data class AppUiState(
     var loadingStatus: ApiStatus = ApiStatus.LOADING
 )
 
-class MainViewModel: ViewModel() {
+@HiltViewModel
+class MainViewModel @Inject constructor (
+    private val apiService: FakeStoreApiService
+): ViewModel() {
 
     private val _uiState = MutableLiveData(AppUiState())
     val uiState: LiveData<AppUiState> = _uiState
@@ -41,7 +42,7 @@ class MainViewModel: ViewModel() {
                         loadingStatus = ApiStatus.LOADING
                     )
                 )
-                val response = NetworkInstance.api.getAllItemsData()
+                val response = apiService.getAllItemsData()
                 if(response.isSuccessful && response.body() != null){
                     _uiState.postValue(
                         _uiState.value!!.copy(
@@ -67,7 +68,7 @@ class MainViewModel: ViewModel() {
                         loadingStatus = ApiStatus.LOADING
                     )
                 )
-                val response = NetworkInstance.api.getCategoriesData()
+                val response = apiService.getCategoriesData()
                 if(response.isSuccessful && response.body() != null){
                     _uiState.postValue(
                         _uiState.value!!.copy(
@@ -93,7 +94,7 @@ class MainViewModel: ViewModel() {
                         loadingStatus = ApiStatus.LOADING
                     )
                 )
-                val response = NetworkInstance.api.getCategoryItems(categoryName)
+                val response = apiService.getCategoryItems(categoryName)
                 if(response.isSuccessful && response.body() != null){
                     _uiState.postValue(
                         _uiState.value!!.copy(
